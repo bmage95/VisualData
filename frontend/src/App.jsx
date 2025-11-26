@@ -81,7 +81,7 @@ function App() {
     plugins: { legend: { display: false } },
     scales: {
       x: { grid: { display: false }, ticks: { color: "#8b9bb4", font: { size: 11 } } },
-      y: { display: false }, // Hide Y axis for cleaner look
+      y: { display: false },
     },
   };
 
@@ -91,7 +91,6 @@ function App() {
         <source src="/bg.mp4" type="video/mp4" />
       </video>
 
-      {/* Centered Admin Panel */}
       {showAdmin && <div className="admin-wrapper"><AdminPanel /></div>}
 
       <div className="video-overlays">
@@ -102,8 +101,16 @@ function App() {
 
       <div className="ui-layer">
         
-        {/* TOP HEADER (Left side only) */}
-        <div className="top-bar">
+        {/* TOP BANNER (Stretched) */}
+        <div className="top-banner">
+          <div className="top-banner-content">
+            <h1>LIWA SOLAR & BATTERY ENERGY SYSTEM – 2025</h1>
+            <span>KILO Energy</span>
+          </div>
+        </div>
+
+        {/* ENERGY STATS (Bottom Left - Floating directly on video) */}
+        <div className="energy-stats">
           <div className="stat-item">
             <div className="icon-circle">⚡</div>
             <div><span className="label">Total Energy</span><h3>1,054.792</h3></div>
@@ -118,14 +125,13 @@ function App() {
           </div>
         </div>
 
-        {/* RIGHT SIDEBAR (Full Height) */}
+        {/* RIGHT SIDEBAR (Moved down) */}
         <div className="right-sidebar">
           
           <button className="admin-btn-internal" onClick={() => setShowAdmin(!showAdmin)}>
             ⚙
           </button>
 
-          {/* Section 1: System Status */}
           <div className="sidebar-section">
              <h4 className="section-title">SYSTEM STATUS</h4>
              <div className="status-grid">
@@ -138,10 +144,9 @@ function App() {
                    <div className="val">92%</div>
                 </div>
              </div>
-             <p className="status-ok">● All Systems Normal</p>
+             <p className="status-ok">All Systems Normal</p>
           </div>
 
-          {/* Section 2: Consumption */}
           <div className="sidebar-section">
             <h4 className="section-title">REAL-TIME CONSUMPTION</h4>
             <div className="list-item">
@@ -152,7 +157,6 @@ function App() {
             </div>
           </div>
           
-          {/* Section 3: Main Graph (Flex grows to fill bottom) */}
           <div className="sidebar-section flex-grow">
              <h4 className="section-title">OPERATING POWER CURVE</h4>
              <div className="chart-container">
