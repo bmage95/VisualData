@@ -1,95 +1,169 @@
-/* Reset */
-* {
+:root {
+  --neon-cyan: #00f2ff;
+  --neon-gold: #ffd700;
+  --glass-bg: rgba(14, 20, 30, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --text-main: #ffffff;
+  --text-dim: #8b9bb4;
+}
+
+body {
+  background: #000;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  color: var(--text-main);
+  overflow: hidden; /* Prevent scrollbars on full screen */
   margin: 0;
-  padding: 0;
-  box-sizing: border-box;
 }
 
-html, body {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  font-family: sans-serif;
-}
-
-/* Main container */
 .dashboard {
   position: relative;
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
 }
 
-/* Background video */
 .bg-video {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   object-fit: cover;
-  z-index: -1;
+  z-index: 0;
+}
+
+/* Floating Labels */
+.video-overlays {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 1; pointer-events: none;
+}
+.floating-label {
+  position: absolute; display: flex; align-items: center; gap: 10px;
+  transform: translate(-50%, -50%);
+}
+.floating-label .dot {
+  width: 10px; height: 10px; background: var(--neon-cyan);
+  border-radius: 50%; box-shadow: 0 0 15px var(--neon-cyan);
+}
+.floating-label .content {
+  background: rgba(0, 0, 0, 0.6); border: 1px solid var(--neon-cyan);
+  padding: 8px 12px; border-radius: 4px; backdrop-filter: blur(4px);
+}
+.floating-label .label { font-size: 0.8rem; color: var(--text-dim); display: block; }
+.floating-label .value { font-size: 1.1rem; font-weight: bold; }
+
+/* UI GRID LAYOUT - RESPONSIVE 1900x1200 */
+.ui-layer {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 2;
+  display: grid;
+  /* Left col gets rest, Right col gets 28% of screen width */
+  grid-template-columns: 1fr 28vw; 
+  /* Top row for header, bottom row for rest */
+  grid-template-rows: 12vh 1fr;
+  padding: 2vh 2vw;
+  gap: 2vh;
   pointer-events: none;
 }
 
-/* Transparent overlay for content */
-.overlay {
+/* Top Bar - Constrained to Column 1 (Left side only) */
+.top-bar {
+  grid-column: 1 / 2;
+  display: flex; gap: 40px;
+  background: linear-gradient(90deg, var(--glass-bg), transparent);
+  padding: 0 30px; border-radius: 16px; border: 1px solid var(--glass-border);
+  align-items: center;
+  pointer-events: auto; /* Allow interaction if needed */
+}
+.stat-item { display: flex; align-items: center; gap: 15px; }
+.icon-circle { 
+  width: 50px; height: 50px; background: rgba(0, 242, 255, 0.1); 
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  color: var(--neon-cyan); font-size: 1.5rem;
+}
+.stat-item h3 { margin: 0; font-size: 1.5rem; }
+.stat-item .label { font-size: 0.9rem; color: var(--text-dim); }
+
+/* Right Sidebar - Full Height (Row 1 to End) */
+.right-sidebar {
+  grid-column: 2 / 3;
+  grid-row: 1 / -1; /* Span all rows to cover header area */
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 30px;
+  backdrop-filter: blur(15px);
+  pointer-events: auto;
+  
+  /* Flex layout to stretch chart */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  
+  /* "Floating" look: separation from screen edge */
+  box-shadow: -10px 0 40px rgba(0,0,0,0.5);
+  overflow: hidden;
+  position: relative; 
+}
+
+/* Internal Admin Button */
+.admin-btn-internal {
+  position: absolute;
+  top: 20px; right: 20px;
+  background: rgba(255,255,255,0.1);
+  color: var(--text-dim);
+  border: none;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+  z-index: 10;
+  font-size: 1.2rem;
+}
+.admin-btn-internal:hover { background: var(--neon-cyan); color: #000; }
+
+.section-title {
+  font-size: 0.9rem; color: var(--text-dim); letter-spacing: 1.5px;
+  margin: 0 0 15px 0; font-weight: 600;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 10px;
+}
+
+/* Status Grid */
+.status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 10px; }
+.status-grid .label { font-size: 0.85rem; color: var(--text-dim); display: block; margin-bottom: 5px; }
+.status-grid .val { font-size: 1.2rem; font-family: monospace; }
+.status-ok { color: var(--neon-cyan); font-size: 1rem; margin-top: 10px; font-weight: 500;}
+
+/* List Items */
+.list-item {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 1rem; margin-bottom: 12px;
+}
+.list-item .dot { width: 8px; height: 8px; border-radius: 50%; margin-right: 10px; }
+.list-item .dot.cyan { background: var(--neon-cyan); }
+.list-item .dot.yellow { background: var(--neon-gold); }
+.list-item .val { font-family: monospace; font-size: 1.1rem; }
+
+/* Flex Grow Chart */
+.flex-grow {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; 
+}
+.chart-container {
+  flex-grow: 1;
   position: relative;
   width: 100%;
-  height: 100%;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 }
 
-/* TOP RIGHT INFO CARDS */
-.info-row {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.card {
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 12px;
-  padding: 16px 22px;
-  backdrop-filter: blur(8px);
-  color: white;
-  width: 220px;
-}
-
-/* BOTTOM CHART AREA */
-.chart-row {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-
-  display: flex;
-  gap: 20px;
-}
-
-.chart-box {
-  width: 350px;
-  height: 230px;
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 12px;
-  padding: 12px;
-  backdrop-filter: blur(8px);
-  color: white;
-}
-
-/* Upload Form (optional) */
-.upload-form {
-  position: absolute;
-  left: 20px;
-  top: 20px;
-}
-
-.upload-form input {
-  padding: 6px;
+/* Admin Modal Centered */
+.admin-wrapper { 
+  position: fixed; 
+  top: 50%; left: 50%; 
+  transform: translate(-50%, -50%); 
+  z-index: 200; 
 }
