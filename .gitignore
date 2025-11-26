@@ -25,4 +25,3 @@ dist-ssr
 
 # Ignore local .env files anywhere in the repo (adjust if you want to keep .env.example)
 **/.env
-.env
